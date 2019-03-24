@@ -1,0 +1,41 @@
+---
+title: "Minimal Example"
+output:
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+    orientation: rows
+---
+
+# Page 1
+
+## Row 1
+
+### Box 1
+
+Text for Box 1.
+
+### Box 2
+
+Text for Box 2.
+
+### Box 3
+
+Text for Box 3.
+
+## Row 2
+
+### Box 4
+
+Text for Box 1.
+
+### Box 5
+
+Text for Box 2.
+
+### Box 6
+
+Text for Box 3.
+
+# Page 2
+
+Text for Page 2.

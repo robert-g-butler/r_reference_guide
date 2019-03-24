@@ -1,0 +1,174 @@
+---
+title: "Executive Summary Example"
+output:
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+    orientation: rows
+---
+
+```{r, RSetup, include=FALSE}
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(plotly)
+library(DT)
+```
+
+# Analysis Results {.storyboard data-icon='fa-bar-chart'}
+
+### Static Graph 1
+
+```{r, fig.width=12, fig.height=8}
+ggplot(data = faithful,
+       mapping = aes(x = waiting, y = eruptions, color = ..level..)) +
+  geom_density2d(size = 1, linetype = 'dashed') +
+  scale_x_continuous(name = 'Days between Eruptions') +
+  scale_y_continuous(name = 'Geyser Eruption Size') +
+  scale_color_viridis_c(option = 'plasma') +
+  theme_classic() +
+  theme(legend.position = 'none')
+```
+
+---
+
+<span style='font-size: 16px; font-weight: bold;'>Commentary:</span>
+
+This is the commentary for slide 1.
+
+<hr><span style='font-size: 16px; font-weight: bold;'>Data:</span>
+
+[Link to Data](#FaithfulTable)
+
+### Static Graph 2
+
+```{r, fig.width=12, fig.height=8}
+ggplot(data = seals,
+       mapping = aes(x = long,
+                     xend = long + delta_long,
+                     y = lat,
+                     yend = lat + delta_lat,
+                     color = sqrt((delta_long ^ 2) + (delta_lat ^ 2)))) +
+  geom_segment(arrow = arrow(angle = 30, length = unit(x = .2, units = 'cm')),
+               size = 1) +
+  scale_y_continuous(name = 'Latitude') +
+  scale_x_continuous(name = 'Longitude') +
+  scale_color_viridis_c(trans = 'log') +
+  theme_classic() +
+  theme(legend.position = 'none')
+```
+
+---
+
+<span style='font-size: 16px; font-weight: bold;'>Commentary:</span>
+
+This is the commentary for slide 2.
+
+<hr><span style='font-size: 16px; font-weight: bold;'>Data:</span>
+
+[Link to Data](#SealTable)
+
+### Interactive Graph 1
+
+```{r, fig.width=12, fig.height=8}
+ggplotly(ggplot(data = mpg,
+                mapping = aes(x = class, y = hwy)) +
+           geom_point(mapping = aes(color = hwy,
+                                    text = str_c('Manufacturer: <b>', manufacturer, '</b>',
+                                                 '\nModel: <b>', model, '</b>',
+                                                 '\nClass: <i>', class, '</i>',
+                                                 '\n\nHwy MPG: ', as.character(hwy),
+                                                 '\nCity MPG: ', as.character(cty))),
+                      position = position_jitter(width = .2, height = .4)) +
+           scale_y_continuous(name = 'Car Hwy MPG') +
+           scale_x_discrete(name = 'Car Class') +
+           scale_color_viridis_c() +
+           theme_classic() +
+           theme(legend.position = 'none'),
+         tooltip = 'text')
+```
+
+---
+
+<span style='font-size: 16px; font-weight: bold;'>Commentary:</span>
+
+This is the commentary for slide 3.
+
+<hr><span style='font-size: 16px; font-weight: bold;'>Data:</span>
+
+[Link to Data](#MPGTable)
+
+### Interactive Graph 2
+
+``` {r, fig.width=12, fig.height=8}
+ggplotly(ggplot(data = mpg %>% group_by(manufacturer) %>% summarise(NModels = n()),
+                mapping = aes(x = manufacturer, y = NModels, fill = NModels,
+                              text = str_c('Manufacturer: <b>', manufacturer, '</b>',
+                                           '\n# Car Models: ', as.character(NModels)))) +
+           geom_col() +
+           scale_x_discrete(name = 'Manufacturer') +
+           scale_y_continuous(name = '# of Car Models') +
+           scale_fill_viridis_c() +
+           coord_flip() +
+           theme_classic() +
+           theme(legend.position = 'none'),
+         tooltip = 'text')
+```
+
+---
+
+<span style='font-size: 16px; font-weight: bold;'>Commentary:</span>
+
+This is the commentary for slide 4.
+
+<hr><span style='font-size: 16px; font-weight: bold;'>Data:</span>
+
+[Link to Data](#MPGTable)
+
+# Slide 1 Data (Geyser Eruption Time) {#FaithfulTable data-icon='fa-clock' data-navmenu='Tables'}
+
+``` {r}
+DT::datatable(data = faithful,
+              colnames = c('Eruption Size', 'Days Between Eruptions'),
+              filter = 'top',
+              rownames = FALSE,
+              extensions = 'Buttons',
+              options = list(dom = 'Blfrtip',
+                             buttons = c('csvHtml5', 'excelHtml5'),
+                             pageLength = 10,
+                             lengthMenu = c(10, 100, 1000)))
+```
+
+# Slide 2 Data (Seal Migrations) {#SealTable data-icon='fa-map-marker' data-navmenu='Tables'}
+
+``` {r}
+DT::datatable(data = seals,
+              colnames = c('Latitude', 'Longitude', 'Longitude Movement', 'Latitude Movement'),
+              filter = 'top',
+              rownames = FALSE,
+              extensions = 'Buttons',
+              options = list(dom = 'Blfrtip',
+                             buttons = c('csvHtml5', 'excelHtml5'),
+                             pageLength = 10,
+                             lengthMenu = c(10, 100, 1000)))
+```
+
+# Slide 3 & 4 (Car Specifications) {#MPGTable data-icon='fa-car' data-navmenu='Tables'}
+
+``` {r}
+DT::datatable(data = mpg,
+              colnames = c('Manufacturer', 'Model', 'Displacement', 'Year', 'Cylinders', 'Transmission', 'Drive', 'City MPG', 'Hwy MPG', 'Fuel', 'Class'),
+              filter = 'top',
+              rownames = FALSE,
+              extensions = 'Buttons',
+              options = list(dom = 'Blfrtip',
+                             buttons = c('csvHtml5', 'excelHtml5'),
+                             pageLength = 10,
+                             lengthMenu = c(10, 100, 1000)))
+```
+
+
+
+
+
+
+

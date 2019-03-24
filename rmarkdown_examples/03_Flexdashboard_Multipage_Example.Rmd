@@ -1,0 +1,359 @@
+---
+title: "Example"
+#author: "Robert Butler"
+#date: "December 21, 2018"
+#output: html_document
+output:
+  flexdashboard::flex_dashboard:
+    theme: default  # default cosmo bootstrap cerulean darkly journal flatly readable spacelab united lumen paper sandstone simplex yeti
+    #css: '.../styles.css'
+    logo: 'https://i.imgur.com/eRv8wdl.png'  # Or local file
+    #favicon: planet-logo.png
+    vertical_layout: fill
+    #vertical_layout: scroll
+    #orientation: columns
+    orientation: rows
+    #storyboard: true
+    navbar:
+      - {title: 'About', icon: 'glyphicon-info-sign', href: 'https://www.google.com/'}
+    social: ['menu']
+
+# 1st-Level Options:
+#   {data-orientation=columns}  # Used for layout when there are multiple pages.
+#   {data-orientation=rows}
+#   {data-navmenu='Menu A'}
+#   {.hidden}
+#   {.storyboard}
+
+# 2nd-Level Options:
+#   {.tabset}
+#   {.tabset .tabset-fade}
+#   {vertical_layout: fill}
+#   {vertical_layout: scroll}
+#   {data-height=600}
+#   {data-width=350}
+#   {data-icon='fa-signal'}
+#   {data-icon='glyphicon-remove'}  # Icons are from: Font Awesome, Ionicons, Bootstrap Glyphicons
+
+# 3rd-Level Options:
+#   {.no-padding}
+#   {data-padding=10}
+#   {.no-title}
+#   {data-commentary-width=400}  # Only used for storyboards
+
+---
+
+<!-- CSS Styling -->
+<style>
+body {
+  font-family: "Calibri";
+}
+/* Adjusts the Logo & Title */
+.navbar-logo {
+  width: 20px;
+  margin-top: 7px;
+}
+.navbar-brand {
+  padding-left: 30px;
+}
+/* Squishes the 'Choice' Options in the Storyboard */
+.storyboard-nav .sbframelist {
+    margin: 0 auto;
+    width: 94%;
+    height: 50px;
+    overflow: hidden;
+    text-shadow: none;
+    margin-bottom: 8px;
+}
+.storyboard-nav .sbnext, .storyboard-nav .sbprev {
+    float: left;
+    width: 2%;
+    height: 50px;
+    font-size: 50px;
+}
+</style>
+
+<!-- Javascript Script: Turns the Logo into a button -->
+<script>
+$('.navbar-brand').wrap('<a href="http://www.google.com" target="_blank">');
+</script>
+
+```{r, setup, include=FALSE}
+#knitr::opts_chunk$set(echo = FALSE)  # Sets up options globally
+library(flexdashboard)
+library(dygraphs)
+```
+
+# Visualizations {data-icon='fa-chart-bar'}
+<!-- ================================== -->
+
+## ColRow 1
+<!-- ---------------------------------- -->
+
+### Button 1
+```{r}
+flexdashboard::valueBox(value = 45, caption = 'Emails per Day', icon = 'fa-pencil', color = 'primary', href = NULL)
+```
+
+### Button 2
+```{r}
+flexdashboard::valueBox(value = 126, caption = 'Comments per Day', icon = 'fa-comments', color = 'info', href = NULL)
+```
+
+### Button 3
+```{r}
+flexdashboard::valueBox(value = 15, caption = 'Good Boy Points per Day', icon = 'fa-dollar-sign', color = 'success', href = 'www.google.com')
+```
+
+### Button 4
+```{r}
+flexdashboard::valueBox(value = 5, caption = 'Spam per Day', icon = 'fa-trash', color = 'warning', href = NULL)
+```
+
+### Button 5
+```{r}
+int_danger = 501
+flexdashboard::valueBox(value = int_danger, caption = 'Errors per Day', icon = 'glyphicon-remove', color = ifelse(int_danger>100, 'danger', 'primary'), href = NULL)
+rm(int_danger)
+```
+
+### Button 6
+```{r}
+flexdashboard::valueBox(value = 126, caption = 'Human Beans Active', icon = 'glyphicon-user', color = '#bdbd00', href = NULL)
+```
+
+## ColRow 2 {.tabset .tabset-fade}
+<!-- ---------------------------------- -->
+
+Section 1 is a graph that shows UK deaths from disease from 1974-1979. Section 2 shows only male deaths.
+
+### Section 1
+```{r}
+dygraph(ldeaths)
+```
+
+> Source: Monthly deaths from lung disease in the UK, 1974-1979
+
+### Section 2
+```{r}
+dygraph(mdeaths)
+```
+
+## ColRow 3
+<!-- ---------------------------------- -->
+
+### Section 3
+```{r}
+dygraph(fdeaths)
+```
+
+### Section 4 {.no-title}
+
+Here is a link to [Page 4].
+
+And here's a link to a [MYSTERY PAGE](#anchor-page7)! :D
+
+You can set up custom anchors by typing `{#anchorname}` after sections (*e.g.,* `# Page 5 {#anchor-page5}`) in the markdown.
+
+# Tables {data-icon='fa-table'}
+<!-- ================================== -->
+
+### Gauge 1
+```{r}
+flexdashboard::gauge(value = 91, min = 0, max = 100, symbol = '%', label = 'Contact Rate', href = 'github.com',
+                     sectors = gaugeSectors(danger = c(0,39), warning = c(40,79), success = c(80,100), colors = c('success', 'warning', 'danger')))
+```
+
+### Gauge 2
+```{r}
+flexdashboard::gauge(value = 37.4, min = 0, max = 50, symbol = NULL, label = 'Average Rating', href = NULL,
+                     sectors = gaugeSectors(danger = c(0,20), warning = c(21,40), success = c(41,50), colors = c('success', 'warning', 'danger')))
+```
+
+### Gauge 3
+```{r}
+flexdashboard::gauge(value = 1, min = 0, max = 10, symbol = NULL, label = 'Contact Rate', href = NULL,
+                     sectors = gaugeSectors(danger = c(0,2), warning = c(3,6), success = c(7,10), colors = c('success', 'warning', 'danger')))
+```
+
+# Storyboard {data-icon='fa-book' data-navmenu='Menu A' .storyboard}
+<!-- ================================== -->
+
+### Frame 1
+
+Frames are used as the 'pages' in a storyboard.
+
+<hr>
+
+If you want commentary on a frame, then add 3 asterisks (`***`) or an HTML `<hr>` tag below the frame's content.
+Then add the commentary below that.
+
+### Frame 2 {data-commentary-width=400}
+
+This frame has a commentary width column width of **400**. The default width is **300**.
+
+***
+
+I am a comment from the beyond!
+
+### Frame 3
+
+```{r}
+dygraph(ldeaths)
+```
+
+# Page 4 {data-navmenu='Menu A'}
+<!-- ================================== -->
+
+# Page 5 {data-navmenu='Menu B'}
+<!-- ================================== -->
+
+# Page 6 {data-navmenu='Menu B'}
+<!-- ================================== -->
+
+# Page 7 {#anchor-page7 .hidden}
+<!-- ================================== -->
+
+Welcome to the mystery page!
+
+Sadly, there are neither snacks nor refreshments.
+
+This page is hidden, so it doesn't appear in the tabs at the top of the screen.
+
+# Formatting Guide {data-icon='glyphicon-list-alt'}
+<!-- ================================== -->
+
+<!-- ## ColRow {vertical_layout: scroll} -->
+
+**Resources**
+<hr>
+More in-depth guides can be found at the links below:
+
+- [Markdown Cheatsheet *by Adam Pritchard*](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+- [Markdown Walkthrough *by John Gruber*](https://daringfireball.net/projects/markdown/basics)
+- [RMarkdown Basics *by RStudio*](https://rmarkdown.rstudio.com/authoring_basics.html)
+
+**Headers**
+<hr>
+`# H1`
+
+`## H2`
+
+`### H3`
+
+`#### H4`
+
+`##### H5`
+
+`###### H6`
+
+**Emphasis**
+<hr>
+`Emphasis, aka italics, with *asterisks* or _underscores_.`
+
+Emphasis, aka italics, with *asterisks* or _underscores_.
+
+`Strong emphasis, aka bold, with **asterisks** or __underscores__.`
+
+Strong emphasis, aka bold, with **asterisks** or __underscores__.
+
+`Combined emphasis with **asterisks and _underscores_**.`
+
+Combined emphasis with **asterisks and _underscores_**.
+
+`Strikethrough uses two tildes. ~~Scratch this.~~`
+
+Strikethrough uses two tildes. ~~Scratch this.~~
+
+**Lists**
+<hr>
+
+- item (-, +, and * all work for lists)
+- item
+- item
+    - item (preceeded by 4 spaces)
+    + item
+    * item
+
+1. item
+    - item
+    - item
+2. item
+   You can add spaces to indent paragraphs to match lists.
+3. item
+
+
+**Quotes**
+<hr>
+> "Surely, this is a quote from someone famous."<br />"Don't call me Shirley."
+>
+> --- Robbicus Butticus
+
+**Links**
+<hr>
+`I'm an [inline-style link](https://www.google.com).`<br />
+I'm an [inline-style link](https://www.google.com).
+
+`I'm an [inline-style link with popup title](https://www.google.com "Google's Homepage").`<br />
+I'm an [inline-style link with popup title](https://www.google.com "Google's Homepage").
+
+`I'm a [reference-style link][Arbitrary case-insensitive reference text].`<br />
+I'm a [reference-style link][Arbitrary case-insensitive reference text].
+
+`I'm a [relative reference to a repository file](../blob/master/LICENSE).`<br />
+I'm a [relative reference to a repository file](../blob/master/LICENSE).
+
+`You can use numbers for [reference-style link definitions][1].`<br />
+You can use numbers for [reference-style link definitions][1].
+
+`Or leave it empty and use the [link text itself] (from references below).`<br />
+Or leave it empty and use the [link text itself] (from references below).
+
+URLs and URLs in angle brackets will automatically get turned into links.<br />
+http://www.example.com or <http://www.example.com> and sometimes example.com (but not on Github, for example).
+
+Some text to show that the reference links can follow later.
+
+`[arbitrary case-insensitive reference text]: https://www.mozilla.org`<br />
+`[1]: http://slashdot.org`<br />
+`[link text itself]: http://www.reddit.com`
+
+[arbitrary case-insensitive reference text]: https://www.mozilla.org
+[1]: http://slashdot.org
+[link text itself]: http://www.reddit.com
+
+**Tables**
+<hr>
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+Markdown | Less | Pretty
+--- | --- | ---
+*Still* | `renders` | **nicely**
+1 | 2 | 3
+
+**Images**
+<hr>
+Inline:<br />
+![](https://www.r-project.org/Rlogo.png)
+
+Inline with Popup Title:<br />
+![](http://hexb.in/hexagons/ggplot2.png "ggplot2 Logo")
+
+Inline with Alt Text (not useful):<br />
+![alt text](http://hexb.in/hexagons/rmarkdown.png "RMarkdown Logo")
+
+**Video Links**
+<hr>
+
+With Markdown Syntax:<br />
+[![IMAGE ALT TEXT](http://hexb.in/hexagons/ubuntu.png)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+
+With HTML Tags:<br />
+<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+<img src="http://hexb.in/hexagons/ubuntu.png" alt="IMAGE ALT TEXT" width="240" height="180" border="10" />
+</a>
